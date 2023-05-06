@@ -22,4 +22,9 @@ export class TicketsController {
     await this.ticketsService.deleteTicket(id);
     return { message: `Ticket with ID ${id} has been deleted` };
   }
+
+  @Get()
+  async findAll(): Promise<Ticket[]> {
+    return await this.ticketsService.findAll();
+  }
 }

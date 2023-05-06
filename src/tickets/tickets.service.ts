@@ -20,4 +20,8 @@ export class TicketsService {
       throw new NotFoundException('Ticket not found');
     }
   }
+
+  async findAll(): Promise<Ticket[]> {
+    return await this.ticketModel.find().exec();
+  }
 }
