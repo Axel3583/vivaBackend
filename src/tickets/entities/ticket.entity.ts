@@ -6,8 +6,11 @@ export class Ticket extends Document {
   @Prop({ required: true })
   code: string;
 
-  @Prop({ required: true, default: false })
+  @Prop({ default: true })
   isValid: boolean;
+
+  @Prop({ default: Date.now })
+  createdAt: Date;
 }
 
 export const TicketSchema = SchemaFactory.createForClass(Ticket);

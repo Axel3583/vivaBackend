@@ -1,6 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Ticket, TicketSchema } from '../src/tickets/entities/ticket.entity';
+
 
 describe('AppController', () => {
   let appController: AppController;
