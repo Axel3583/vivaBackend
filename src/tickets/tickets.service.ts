@@ -9,15 +9,10 @@ export class TicketsService {
     @InjectModel(Ticket.name) private readonly ticketModel: Model<Ticket>,
   ) {}
 
-  async validateTicket(code: string): Promise<Ticket> {
-    const ticket = await this.ticketModel.findOne({ code });
-    if (!ticket) {
-      throw new NotFoundException('Ticket not found');
-    }
-    ticket.isValid = this.checkTicketValidity(ticket.code);
-    await ticket.save();
-    return ticket;
-  }
+  async createTicket(code: string): Promise<Ticket> {
+    const newTicket = new this.ticketModel({ code, isValid: true });
+    return await newTicket.save();
+  }  
 
   private checkTicketValidity(code: string): boolean {
     return code.length === 8;
