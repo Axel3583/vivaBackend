@@ -1,4 +1,4 @@
-import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
+import { Body, Controller, Get, NotFoundException, Param, Post, HttpException, HttpStatus } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
 import { Ticket } from '../tickets/entities/ticket.entity';
 
@@ -6,8 +6,15 @@ import { Ticket } from '../tickets/entities/ticket.entity';
 export class TicketsController {
   constructor(private readonly ticketsService: TicketsService) {}
 
-  @Get(':code/validate')
-  async validateTicket(@Param('code') code: string): Promise<Ticket> {
-    return await this.ticketsService.validateTicket(code);
+  @Post()
+  async createTicket(@Body('code') code: string): Promise<Ticket> {
+    // Vérifiez si le code du ticket ne contient que des caractères alphanumériques
+    const isValidEncoding = /^[a-zA-Z0-9]+$/.test(code);
+
+    if (!isValidEncoding) {
+      throw new HttpException('Ticket code not valid', HttpStatus.BAD_REQUEST);
+    }
+
+    return await this.ticketsService.createTicket(code);
   }
 }
