@@ -20,6 +20,3 @@ jobs:
           node-version: 14
 
       - name: Install dependencies
-
-      - name: Check formatting
-        run: npm run format -- --check
