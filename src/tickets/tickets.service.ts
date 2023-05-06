@@ -1,26 +1,25 @@
-import { Injectable } from '@nestjs/common';
-import { CreateTicketDto } from './dto/create-ticket.dto';
-import { UpdateTicketDto } from './dto/update-ticket.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Ticket } from '../tickets/entities/ticket.entity';
 
 @Injectable()
 export class TicketsService {
-  create(createTicketDto: CreateTicketDto) {
-    return 'This action adds a new ticket';
+  constructor(
+    @InjectModel(Ticket.name) private readonly ticketModel: Model<Ticket>,
+  ) {}
+
+  async validateTicket(code: string): Promise<Ticket> {
+    const ticket = await this.ticketModel.findOne({ code });
+    if (!ticket) {
+      throw new NotFoundException('Ticket not found');
+    }
+    ticket.isValid = this.checkTicketValidity(ticket.code);
+    await ticket.save();
+    return ticket;
   }
 
-  findAll() {
-    return `This action returns all tickets`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} ticket`;
-  }
-
-  update(id: number, updateTicketDto: UpdateTicketDto) {
-    return `This action updates a #${id} ticket`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} ticket`;
+  private checkTicketValidity(code: string): boolean {
+    return code.length === 8;
   }
 }
