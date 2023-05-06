@@ -14,7 +14,10 @@ export class TicketsService {
     return await newTicket.save();
   }  
 
-  private checkTicketValidity(code: string): boolean {
-    return code.length === 8;
+  async deleteTicket(id: string): Promise<void> {
+    const deletedTicket = await this.ticketModel.findByIdAndDelete(id);
+    if (!deletedTicket) {
+      throw new NotFoundException('Ticket not found');
+    }
   }
 }
