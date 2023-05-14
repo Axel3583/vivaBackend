@@ -1,26 +1,33 @@
 import { Injectable } from '@nestjs/common';
-import { CreateStandDto } from './dto/create-stand.dto';
-import { UpdateStandDto } from './dto/update-stand.dto';
+import { Stand } from './entities/stand.entity';
 
 @Injectable()
-export class StandsService {
-  create(createStandDto: CreateStandDto) {
-    return 'This action adds a new stand';
+export class StandService {
+  private stands: Stand[] = [];
+
+  async getAllStands(): Promise<Stand[]> {
+    return this.stands;
   }
 
-  findAll() {
-    return `This action returns all stands`;
+  async getStandById(id: string): Promise<Stand> {
+    return this.stands.find((stand) => stand.id === id);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} stand`;
+  async createStand(stand: Stand): Promise<Stand> {
+    this.stands.push(stand);
+    return stand;
   }
 
-  update(id: number, updateStandDto: UpdateStandDto) {
-    return `This action updates a #${id} stand`;
+  async updateStand(id: string, updatedStand: Stand): Promise<Stand> {
+    const standIndex = this.stands.findIndex((stand) => stand.id === id);
+    if (standIndex !== -1) {
+      this.stands[standIndex] = { ...this.stands[standIndex], ...updatedStand };
+      return this.stands[standIndex];
+    }
+    return null;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} stand`;
+  async deleteStand(id: string): Promise<void> {
+    this.stands = this.stands.filter((stand) => stand.id !== id);
   }
 }
