@@ -1,34 +1,33 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { StandsService } from './stands.service';
-import { CreateStandDto } from './dto/create-stand.dto';
-import { UpdateStandDto } from './dto/update-stand.dto';
+import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
+import { Stand } from './entities/stand.entity';
+import { StandService } from '../stands/stands.service';
 
 @Controller('stands')
-export class StandsController {
-  constructor(private readonly standsService: StandsService) {}
-
-  @Post()
-  create(@Body() createStandDto: CreateStandDto) {
-    return this.standsService.create(createStandDto);
-  }
+export class StandController {
+  constructor(private readonly standService: StandService) {}
 
   @Get()
-  findAll() {
-    return this.standsService.findAll();
+  async getAllStands(): Promise<Stand[]> {
+    return this.standService.getAllStands();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.standsService.findOne(+id);
+  async getStandById(@Param('id') id: string): Promise<Stand> {
+    return this.standService.getStandById(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateStandDto: UpdateStandDto) {
-    return this.standsService.update(+id, updateStandDto);
+  @Post()
+  async createStand(@Body() stand: Stand): Promise<Stand> {
+    return this.standService.createStand(stand);
+  }
+
+  @Put(':id')
+  async updateStand(@Param('id') id: string, @Body() stand: Stand): Promise<Stand> {
+    return this.standService.updateStand(id, stand);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.standsService.remove(+id);
+  async deleteStand(@Param('id') id: string): Promise<void> {
+    return this.standService.deleteStand(id);
   }
 }
