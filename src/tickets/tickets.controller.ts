@@ -24,6 +24,11 @@ export class TicketsController {
     return { message: `Ticket with ID ${id} has been deleted` };
   }
 
+  @Get(':id')
+  async getTicket(@Param('id') id: string): Promise<{ message: string }> {
+    await this.ticketsService.findByCode(id);
+    return { message: `Ticket with ID ${id} has been deleted` };
+  }
   @Get()
   async findAll(): Promise<Ticket[]> {
     return await this.ticketsService.findAll();

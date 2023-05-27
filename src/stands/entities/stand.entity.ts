@@ -1,8 +1,9 @@
 export interface Stand {
     id: string;
     name: string;
-    location: string;
-    longitute: string;
-    latitude: string;
+    description: string;
+    location?: string;
+    // longitute: string;
+    // latitude: string;
   }
   
