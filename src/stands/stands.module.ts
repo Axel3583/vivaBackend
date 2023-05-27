@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { StandsService } from './stands.service';
-import { StandsController } from './stands.controller';
+import { StandService } from './stands.service';
+import { StandController } from './stands.controller';
 
 @Module({
-  controllers: [StandsController],
-  providers: [StandsService]
+  controllers: [StandController],
+  providers: [StandService]
 })
 export class StandsModule {}
